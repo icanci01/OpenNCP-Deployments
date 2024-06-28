@@ -1,29 +1,40 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<patientSearch>
-   <!-- min and max -1 means no length check -->
-   <!-- id format="LLLLLLNNLNNLNNNL" means 'L'etter 'N'umber -->
-   <!-- validation contains the fields which are mandatory -->
-   <!-- more then one validation means or -->
-   <!-- only one input field no validation necessary because minimum value which has to be filled out is 1 -->
-   <country code="AT">
-      <searchFields>
-         <textField label="patient.data.surname" min="3" max="-1" dtoIndex="1" friendlyName="surname"/>
-         <textField label="patient.data.givenname" min="3" max="-1" dtoIndex="2" friendlyName="givenName"/>
-         <birthDate label="patient.data.birth.date" min="-1" max="-1"/>
-<!--          <birthDate label="patient.data.birth.date" />    -->
-<!--     <textField label="patient.data.street.address" min="-1" max="-1" dtoIndex="24" />  
-         <textField label="patient.data.code" min="-1" max="-1" dtoIndex="27" />
-         <textField label="patient.data.city" min="-1" max="-1" dtoIndex="25" />
-         <sex label="patient.data.sex" />
--->         
-         <id label="patient.search.patient.id" min="-1" max="-1" domain="2.16.17.710.780.1000.990.1" friendlyName="healthInsuranceId"/>
-<!--     <id label="patient.search.patient.svnr" min="-1" max="-1" domain="2.16.17.710.780.1000.990.1" />   -->
-      </searchFields>
-      <validation>
-         <field label="patient.data.surname" />
-      </validation>
-      <validation>
-         <field label="patient.data.givenname" />
-      </validation>
-   </country>
-</patientSearch>
+<ism:searchFields xmlns="http://docs.oasis-open.org/bdxr/ns/SMP/2016/05"
+                  xmlns:ism="http://ec.europa.eu/sante/ehncp/ism"
+                  xmlns:ns2="http://www.w3.org/2000/09/xmldsig#"
+                  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                  xsi:schemaLocation="http://ec.europa.eu/sante/ehncp/ism">
+   <ism:country code="AT"
+                friendlyName="International Search Mask for Austria"
+                label="label.ism.addressCountry">
+      <ism:patientSearch friendlyName="Patient Identity Traits" scope="ALL">
+         <ism:identifier type="CHOICE">
+            <ism:ids display="One Time Token">
+               <ism:id contextualDescription="Personal ID"
+                       domain="2.16.17.710.780.1000.990.1"
+                       format="^[2-7,A-Z,a-z]{8}$"
+                       label="label.ism.nationalPersonIdentifier"
+                       mandatory="true"/>
+            </ism:ids>
+            <ism:ids display="Patient Information">
+               <ism:id contextualDescription="passportNumber"
+                       domain="2.16.17.710.780.1000.990.1"
+                       format="^[A-Z,a-z]{1,2}[0-9]{7}$"
+                       label="label.ism.passportNumber"/>
+            </ism:ids>
+         </ism:identifier>
+         <ism:textField contextualDescription="firstName"
+                        format="^.{1,}$"
+                        label="label.ism.firstName"
+                        mandatory="false"/>
+         <ism:textField contextualDescription="familyName"
+                        format="^.{1,}$"
+                        label="label.ism.familyName"
+                        mandatory="false"/>
+         <ism:birthDate contextualDescription="birthDate"
+                        format="YYYY-MM-DD"
+                        label="label.ism.birthDate"
+                        mandatory="false"/>
+      </ism:patientSearch>
+   </ism:country>
+</ism:searchFields>

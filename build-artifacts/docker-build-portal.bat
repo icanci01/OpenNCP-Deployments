@@ -2,15 +2,15 @@
 SETLOCAL
 
 @REM --- Variables ---
-set PORTAL_VERSION=1.1.0
+set PORTAL_VERSION=2.0.0
 set PORTAL_SOURCE_REPO=https://code.europa.eu/ehdsi/ehealth-portal
-set PORTAL_SOURCE_BRANCH=releases/7.1
+set PORTAL_SOURCE_TAG=2.0.0
 
 @REM --- Build Portal ---
 docker build -f Dockerfile.portal ^
   --build-arg PORTAL_VERSION=%PORTAL_VERSION% ^
   --build-arg PORTAL_SOURCE_REPO=%PORTAL_SOURCE_REPO% ^
-  --build-arg PORTAL_SOURCE_BRANCH=%PORTAL_SOURCE_BRANCH% ^
+  --build-arg PORTAL_SOURCE_TAG=%PORTAL_SOURCE_TAG% ^
   -t ehealth-portal-artifacts:%PORTAL_VERSION% .
 
 docker run --name ehealth-portal-artifacts -d ehealth-portal-artifacts:%PORTAL_VERSION%

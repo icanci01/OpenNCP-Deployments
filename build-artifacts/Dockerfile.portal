@@ -10,18 +10,17 @@ COPY configs/maven-settings.xml /usr/share/maven/conf/settings.xml
 # Define ARGS
 ARG PORTAL_VERSION
 ARG PORTAL_SOURCE_REPO
-ARG PORTAL_SOURCE_BRANCH
+ARG PORTAL_SOURCE_TAG
 
 WORKDIR /usr/src
 
 # Clone the OpenNCP source code
-RUN git clone --branch ${PORTAL_SOURCE_BRANCH} ${PORTAL_SOURCE_REPO} portal
+RUN git clone --branch ${PORTAL_SOURCE_TAG} ${PORTAL_SOURCE_REPO} portal
 
 # Build the OpenNCP source code (with external dynamic-discovery-client-1.11.jar)
 # There is an issue with the dynamic-discovery-client-1.11.jar file in the maven repository
-COPY libs/dynamic-discovery-client-1.11.jar .
-COPY configs/portal-frontend-pom.xml portal/ehealth-portal-frontend/pom.xml
-RUN mvn install:install-file -Dfile=dynamic-discovery-client-1.11.jar -DgroupId=eu.europa.ec.dynamic-discovery -DartifactId=dynamic-discovery-client -Dversion=1.11 -Dpackaging=jar
+COPY libs/dynamic-discovery-client-1.13.jar .
+RUN mvn install:install-file -Dfile=dynamic-discovery-client-1.13.jar -DgroupId=eu.europa.ec.dynamic-discovery -DartifactId=dynamic-discovery-client -Dversion=1.13 -Dpackaging=jar
 RUN cd portal && mvn clean package -DskipTests
 
 # Move the war file to the working directory
@@ -37,12 +36,12 @@ RUN apt-get update && apt-get install -y git
 
 # Define ARGS
 ARG PORTAL_SOURCE_REPO
-ARG PORTAL_SOURCE_BRANCH
+ARG PORTAL_SOURCE_TAG
 
 WORKDIR /usr/src
 
 # Clone the portal source code
-RUN git clone --branch ${PORTAL_SOURCE_BRANCH} ${PORTAL_SOURCE_REPO} portal
+RUN git clone --branch ${PORTAL_SOURCE_TAG} ${PORTAL_SOURCE_REPO} portal
 
 # Copy .env file
 COPY configs/portal.env portal/ehealth-portal-frontend/.env.production
